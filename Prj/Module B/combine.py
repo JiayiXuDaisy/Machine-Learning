@@ -141,6 +141,7 @@ def train(epoch):
             % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
 
     Train_acc = 100.*correct/total
+    # save result
     f = open('train_res.txt','a')
     f.write("Epoch:%d \t Accu:%.3f%% \n " %(epoch,Train_acc))
     f = open('learning_rate.txt','a')
@@ -180,6 +181,7 @@ def PublicTest(epoch):
     
     # Save checkpoint.
     PublicTest_acc = 100.*correct/total
+    # save result
     f = open('publicTest_res.txt','a')
     f.write("Epoch:%d \t Accu:%.3f%% \n " %(epoch,PublicTest_acc))
     if PublicTest_acc > best_PublicTest_acc:
@@ -227,6 +229,7 @@ def PrivateTest(epoch):
             % (PrivateTest_loss / (batch_idx + 1), 100. * correct / total, correct, total))
     # Save checkpoint.
     PrivateTest_acc = 100.*correct/total
+    # save result
     f = open('privateTest_res.txt','a')
     f.write("Epoch:%d \t Accu:%.3f%% \n " %(epoch,PrivateTest_acc))
     if PrivateTest_acc > best_PrivateTest_acc:
@@ -251,6 +254,7 @@ for epoch in range(start_epoch, total_epoch):
     PublicTest(epoch)
     PrivateTest(epoch)
 
+# print best results
 print("best_PublicTest_acc: %0.3f" % best_PublicTest_acc)
 print("best_PublicTest_acc_epoch: %d" % best_PublicTest_acc_epoch)
 print("best_PrivateTest_acc: %0.3f" % best_PrivateTest_acc)

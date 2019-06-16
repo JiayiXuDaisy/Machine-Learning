@@ -32,6 +32,7 @@ images = images.astype(np.float)
 labels_flat = data["emotion"].values.ravel()
 labels_flat = labels_flat
 
+# transform pixels to image 
 cln = []
 for image in images:
     img = []
@@ -41,6 +42,7 @@ for image in images:
     image = np.concatenate((img_trans, img_trans, img_trans), axis=0)
     cln.append(image)
 
+# transform list to tensor
 cln_data = torch.FloatTensor(cln)
 labels = torch.FloatTensor(labels_flat)
 
@@ -58,6 +60,7 @@ adversary = LinfPGDAttack(net, loss_fn=nn.CrossEntropyLoss(reduction="sum"), eps
 adv_untargeted = adversary.perturb(cln_data, labels)
 adv = adv_untargeted
 
+# save adversarial data
 f = open('adversial.txt','a')
 for data in adv_untargeted:
     dat = data[1].data.numpy().reshape(1,-1).ravel()
@@ -81,7 +84,7 @@ defense = nn.Sequential(
     median_filter,
 )
 
-
+# save defended adversarial data
 adv_defended = defense(adv)
 f = open('adv_defended.txt','a')
 for data in adv_defended:
@@ -90,6 +93,7 @@ for data in adv_defended:
     for d in dat:
         f.write('%.3f\t'%d)
     f.write('\n')
+# save defended clean data
 cln_defended = defense(cln_data)
 f = open('cln_defended.txt','a')
 for data in cln_defended:
